@@ -1,23 +1,29 @@
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart 
 from email import encoders
+import os
+import ssl
+import smtplib
+import socket
 
 # NOTE CHROME MUST BE INSTALLED
 # https://github.com/b1tst0rm/pygsuite/blob/master/send.py
-def gmail_sendemail(logger, email_from, email_to, email_subiect, logfile_path, computername):
+def gmail_sendemail(email_from, email_to, email_subject, email_attachment_path, email_body=None, logger=None):
+    
     # body = (
     #     """{}""".format(log)
     # )
 
     msg = MIMEMultipart()
-    msg['Subject'] = ("{} - Log Explorer.exe".format(computername))
+    msg['Subject'] = email_subject
     msg['From'] = email_from
     msg['To'] = email_to
-    # msg.set_content(body)
+    if email_body != None:
+        msg.set_content(email_body)
 
     # Setup the attachment
-    filename = os.path.basename(logfile_path)
-    attachment = open(logfile_path, "rb")
+    filename = os.path.basename(email_attachment_path)
+    attachment = open(email_attachment_path, "rb")
     part = MIMEBase('application', 'octet-stream')
     part.set_payload(attachment.read())
     encoders.encode_base64(part)
