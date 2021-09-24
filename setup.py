@@ -6,7 +6,7 @@ setup(
     packages=['isakk'],
     license='MIT',
     description='It Swiss Army Knife Kit - namecode: ISAKK',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     # install_requires=['numpy'],
     url='https://github.com/menteora/isakk',
     author="Luca D'Amico",
