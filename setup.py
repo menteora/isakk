@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='isakk',
-    version='0.1',
+    version='0.0.1',
     packages=['isakk'],
     license='MIT',
     description='It Swiss Army Knife Kit - namecode: ISAKK',
