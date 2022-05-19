@@ -7,13 +7,19 @@ def getMainFolder():
     return os.path.dirname(os.getcwd())
 
 def getOutputPath(filename=None):
-    return os.path.join(getMainSubfolder('outputs'), filename)
+    if filename == None:
+        return getMainSubfolder('outputs')
+    else:
+        return os.path.join(getMainSubfolder('outputs'), filename)
 
 def getLogPath(filename=None):
     return os.path.join(getMainSubfolder('logs'), filename)
 
 def getInputPath(filename=None):
-    return os.path.join(getMainSubfolder('inputs'), filename)
+    if filename == None:
+        return getMainSubfolder('inputs')
+    else:
+        return os.path.join(getMainSubfolder('inputs'), filename)   
 
 def getConfigPath(filename=None):
     return os.path.join(getMainSubfolder('configs'), filename)
