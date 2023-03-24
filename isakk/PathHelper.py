@@ -47,6 +47,13 @@ class PathHelper:
             return self.getMainSubfolder(folder_name)
         else:    
             return os.path.join(self.getMainSubfolder(folder_name), filename)
+
+    def getBinPath(self, filename=None):
+        folder_name = 'configs'
+        if filename==None:
+            return self.getMainSubfolder(folder_name)
+        else:    
+            return os.path.join(self.getMainSubfolder(folder_name), filename)
 # def getAppDirectoryPath():
 #     return os.getcwd()
 
