@@ -33,6 +33,13 @@ def getConfigPath(filename=None):
         return getMainSubfolder(folder_name)
     else:    
         return os.path.join(getMainSubfolder(folder_name), filename)
+    
+def getBinPath(filename=None):
+    folder_name = 'bin'
+    if filename==None:
+        return getMainSubfolder(folder_name)
+    else:    
+        return os.path.join(getMainSubfolder(folder_name), filename)
 # def getAppDirectoryPath():
 #     return os.getcwd()
 
