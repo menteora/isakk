@@ -4,7 +4,7 @@ def getMainSubfolder(folder):
     return os.path.join(getMainFolder(), folder)
 
 def getMainFolder():
-    return os.path.dirname(os.getcwd())
+    return os.getcwd()
 
 def getOutputPath(filename=None):
     folder_name = 'outputs'
