@@ -109,12 +109,13 @@ class InputDialog(App):
         }
     """
 
-    def __init__(self, message='Place *your* message here, markdown mode *on*', title='Title', place_holder='Inserisci il valore qui..', ok_button_text='OK'):
+    def __init__(self, message='Place *your* message here, markdown mode *on*', title='Title', place_holder='Inserisci il valore qui..', ok_button_text='OK', default_value=''):
         super().__init__()
         self.message = message
         self.title = title
         self.ok_button_text = ok_button_text
         self.place_holder = place_holder
+        self.default_value = default_value
 
     def compose(self):
         """Create child widgets for the app."""
@@ -123,7 +124,7 @@ class InputDialog(App):
         yield VerticalScroll(
             Markdown(self.message, classes="message"),
             Input(
-                placeholder=self.place_holder, id='input_box'
+                placeholder=self.place_holder, id='input_box', value=self.default_value,
             ),
             Button(self.ok_button_text,variant="primary", id='confirm')
         )
@@ -185,11 +186,13 @@ class YesNoDialog(App):
 
 
 if __name__ == "__main__":
+    """
     ret = RadioDialog().run()
     print(ret)
     ret = YesNoDialog().run()
     print(ret)
     ret = MessageDialog().run()
     print(ret)
-    ret = InputDialog().run()
+    """
+    ret = InputDialog(default_value='valore di default').run()
     print(ret)
