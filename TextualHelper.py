@@ -1,7 +1,10 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer
 from textual.containers import Horizontal, VerticalScroll, Container
-from textual.widgets import Button, Input, Static, Markdown, RadioSet, RadioButton, TextArea, LoadingIndicator
+from textual.widgets import Button, Input, Markdown, RadioSet, RadioButton, TextArea, RichLog, Log
+from textual.events import Print
+import importlib
+from rich.syntax import Syntax
 
 class TextAreaDialog(App):
 
@@ -224,6 +227,109 @@ class YesNoDialog(App):
             self.exit(True)
         elif event.button.id == 'no':
             self.exit(False)
+
+
+class PrintLogDialog(App):
+
+    CSS = """
+        Button {
+            width: 100%;
+            height: auto;
+            dock: bottom;
+        }
+
+        .header {
+            margin: 2 2 2 2;
+            text-style: bold;
+        }
+    """  
+
+    def __init__(self, run_class, title='', run_method='run', data={}, ok_button_text='OK') -> None:
+        super().__init__()
+        self.run_class = run_class
+        self.run_method = run_method
+        self.data = data
+        self.ok_button_text = ok_button_text
+        self.title = title
+        self.ret_code = None
+
+    def compose(self) -> ComposeResult:
+        yield Header(self.title)
+        yield Footer()
+        # yield VerticalScroll(
+        #     Log()
+        # )
+        yield Log()
+        yield Button(self.ok_button_text,variant="primary", id='confirm')
+
+    def on_print(self, event: Print) -> None:
+        self.query_one(Log).write(event.text)        
+
+    def on_mount(self) -> None:
+        module = importlib.import_module(self.run_class)
+        self.begin_capture_print(self)
+        func = getattr(module, self.run_method)
+        if self.data == {}:
+            self.ret_code = func()
+        else:
+            self.ret_code = func(self.data)
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        # self.exit(str(event.button))
+        self.exit(self.ret_code)
+
+class PrintRichlogDialog(App):
+
+    CSS = """
+        Button {
+            width: 100%;
+            height: auto;
+            dock: bottom;
+        }
+
+        .header {
+            margin: 2 2 2 2;
+            text-style: bold;
+        }
+    """  
+
+    def __init__(self, run_class, title='', syntax='', run_method='run', data={}, ok_button_text='OK') -> None:
+        super().__init__()
+        self.run_class = run_class
+        self.run_method = run_method
+        self.data = data
+        self.ok_button_text = ok_button_text
+        self.title = title
+        self.ret_code = None
+        self.syntax = syntax
+
+    def compose(self) -> ComposeResult:
+        yield Header(self.title)
+        yield Footer()
+        yield VerticalScroll(
+            RichLog(highlight=True, markup=True)
+        )
+        yield Button(self.ok_button_text,variant="primary", id='confirm')
+
+    def on_print(self, event: Print) -> None:
+        if self.syntax == '':
+            self.query_one(RichLog).write(event.text)        
+        else:
+            self.query_one(RichLog).write(Syntax(event.text, self.syntax))
+
+    def on_mount(self) -> None:
+        module = importlib.import_module(self.run_class)
+        self.begin_capture_print(self)
+        func = getattr(module, self.run_method)
+        if self.data == {}:
+            self.ret_code = func()
+        else:
+            self.ret_code = func(self.data)
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        # self.exit(str(event.button))
+        self.exit(self.return_code)
+
 
 
 if __name__ == "__main__":
