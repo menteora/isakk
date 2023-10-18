@@ -5,6 +5,7 @@ from textual.widgets import Button, Input, Markdown, RadioSet, RadioButton, Text
 from textual.events import Print
 import importlib
 from rich.syntax import Syntax
+from textual import work
 
 class TextAreaDialog(App):
 
@@ -266,8 +267,12 @@ class PrintLogDialog(App):
         self.query_one(Log).write(event.text)        
 
     def on_mount(self) -> None:
-        module = importlib.import_module(self.run_class)
+        self.run_my_worker()
+
+    @work(thread=True)
+    def run_my_worker(self):
         self.begin_capture_print(self)
+        module = importlib.import_module(self.run_class)
         func = getattr(module, self.run_method)
         if self.data == {}:
             self.ret_code = func()
@@ -318,8 +323,12 @@ class PrintRichlogDialog(App):
             self.query_one(RichLog).write(Syntax(event.text, self.syntax))
 
     def on_mount(self) -> None:
-        module = importlib.import_module(self.run_class)
+        self.run_my_worker()
+
+    @work(thread=True)
+    def run_my_worker(self):
         self.begin_capture_print(self)
+        module = importlib.import_module(self.run_class)
         func = getattr(module, self.run_method)
         if self.data == {}:
             self.ret_code = func()
