@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="isakk",
-    version="0.1.2",
+    version="0.1.3",
     author="Luca D'Amico",
     author_email="menteora@bancolini.com",
     package_dir={
