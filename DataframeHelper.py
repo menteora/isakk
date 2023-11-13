@@ -37,3 +37,23 @@ def convert_to_dateonly(df, date_field, format='%d/%m/%Y'):
 def filter_column_equal_to(df, column, filter):
     filtered = df[column]==filter
     return df[filtered]
+
+def fill_column_with_value(df, name, value):
+    df[name] = value
+    return df
+
+def filter_column_from_list(df, columns = []):
+    """ Filtra le colonne da prendere dentro un dataframe partendo da una lista"""
+    return df[columns]
+
+def get_columns_name_as_dict(df):
+    """ Ritorna le colonne dentro il dataframe come un dict"""
+
+    df_headers_dict = {}
+    
+    for col in df.columns:
+
+        idx = df.columns.get_loc(col)
+        df_headers_dict[col] = idx
+
+    return df_headers_dict
