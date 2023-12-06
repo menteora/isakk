@@ -148,6 +148,13 @@ class RadioDialog(App):
             margin: 1 0;
             text-style: bold;
             min-height: 2;
+
+        }
+        RadioSet {
+            width: 100%;
+        }
+        RadioButton {
+            margin: 1;          
         }
 
         .header {
@@ -261,7 +268,7 @@ class PrintLogDialog(App):
         #     Log()
         # )
         yield Log()
-        yield Button(self.ok_button_text,variant="primary", id='confirm')
+        yield Button(self.ok_button_text,variant="primary", id='confirm', disabled=True)
 
     def on_print(self, event: Print) -> None:
         self.query_one(Log).write(event.text)        
@@ -278,6 +285,8 @@ class PrintLogDialog(App):
             self.ret_code = func()
         else:
             self.ret_code = func(self.data)
+
+        self.query_one("#confirm").disabled = False
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         # self.exit(str(event.button))
@@ -314,7 +323,7 @@ class PrintRichlogDialog(App):
         yield VerticalScroll(
             RichLog(highlight=True, markup=True)
         )
-        yield Button(self.ok_button_text,variant="primary", id='confirm')
+        yield Button(self.ok_button_text,variant="primary", id='confirm', disabled=True)
 
     def on_print(self, event: Print) -> None:
         if self.syntax == '':
@@ -334,10 +343,13 @@ class PrintRichlogDialog(App):
             self.ret_code = func()
         else:
             self.ret_code = func(self.data)
+        
+        self.query_one("#confirm").disabled = False
+    
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         # self.exit(str(event.button))
-        self.exit(self.return_code)
+        self.exit(self.ret_code)
 
 
 
